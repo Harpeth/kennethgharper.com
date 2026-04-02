@@ -325,13 +325,28 @@
   <script>
     var bars = document.querySelectorAll('.sigbar');
     var bottom = 90;
-    var t = 0;
+    var current = 0.85;
+    var target = 0.85;
+    var nextChange = 0;
+
+    function newTarget() {
+      target = 0.2 + Math.random() * 0.8;
+      nextChange = Date.now() + 1500 + Math.random() * 4000;
+    }
+    newTarget();
+
+    var last = Date.now();
     function animateBars() {
-      t += 0.04;
-      var signal = 0.4 + 0.6 * (Math.sin(t * 0.7) + 1) / 2;
+      var now = Date.now();
+      if (now > nextChange) newTarget();
+      var speed = 0.0008 + Math.random() * 0.001;
+      var diff = target - current;
+      current += diff * speed * (now - last);
+      current = Math.max(0.15, Math.min(1, current));
+      last = now;
       for (var i = 0; i < bars.length; i++) {
         var base = parseFloat(bars[i].getAttribute('data-base'));
-        var h = Math.max(1, Math.round(base * signal));
+        var h = Math.max(1, Math.round(base * current));
         bars[i].setAttribute('y', bottom - h);
         bars[i].setAttribute('height', h);
       }
