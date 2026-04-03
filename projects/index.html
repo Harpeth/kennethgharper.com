@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kenneth Harper — Cybersecurity">
   <meta name="theme-color" content="#7a8c6e">
-  <title>Kenneth Harper</title>
+  <title>Projects — Kenneth Harper</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; background: #7a8c6e; }
@@ -327,11 +326,46 @@
   <div class="tagline">CYBERSECURITY · USMC</div>
   <div class="divider"></div>
   <nav>
-    <a href="/" class="active">home</a>
+    <a href="/">home</a>
     <a href="/work">work</a>
-    <a href="/projects">projects</a>
+    <a href="/projects" class="active">projects</a>
     <a href="/writing">writing</a>
   </nav>
+
+  <div class="section-label">PROJECTS</div>
+
+  <div class="entry">
+    <div class="entry-title">kennethgharper.com — Self-Hosted Homelab</div>
+    <div class="entry-meta">UBUNTU · DOCKER · NGINX · CLOUDFLARE · TAILSCALE</div>
+    <div class="entry-body">
+      Always-on server running self-hosted services behind a Cloudflare Tunnel. Managed headlessly over SSH via Tailscale. Hosts this site, private cloud storage, and a file transfer service.
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-title">Windows Blue Team Lab</div>
+    <div class="entry-meta">SYSINTERNALS · ACTIVE DIRECTORY · INCIDENT RESPONSE</div>
+    <div class="entry-body">
+      Built and defended Windows environments in CCDC-style scenarios. Practiced identifying persistence mechanisms, abnormal processes, and lateral movement using Sysinternals and Windows event logs.
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-title">Embedded Security — Voltage Glitch Research</div>
+    <div class="entry-meta">MITRE ECTF · EMBEDDED SYSTEMS · HARDWARE ATTACKS</div>
+    <div class="entry-body">
+      Analyzed embedded system designs for security weaknesses. Performed voltage glitch attacks to skip instructions and bypass authentication logic on target hardware.
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-title">NCAE CyberGames — 2nd Place</div>
+    <div class="entry-meta">DEFENSIVE ROLE · LINUX HARDENING</div>
+    <div class="entry-body">
+      Competed in a live blue team environment defending Linux infrastructure against an active red team. Finished 2nd nationally.
+    </div>
+  </div>
+
   <script>
     var bars = document.querySelectorAll('.sigbar');
     var signal = 4;
