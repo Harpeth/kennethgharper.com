@@ -4,17 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#7a8c6e">
-  <title>Projects — Kenneth Harper</title>
+  <title>Competitions — Kenneth Harper</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; background: #7a8c6e; }
-    body {
-      font-family: monospace;
-      color: #1a2218;
-      padding: 10vw 8vw;
-      max-width: 860px;
-      margin: 0 auto;
-    }
+    body { font-family: monospace; color: #1a2218; padding: 10vw 8vw; max-width: 860px; margin: 0 auto; }
     .name-svg { width: 100%; max-width: 580px; height: auto; display: block; margin-bottom: 1.6rem; }
     .tagline { font-size: clamp(11px, 2vw, 13px); color: #2a3a28; letter-spacing: 0.25em; margin-bottom: 2.5rem; }
     .divider { height: 0.5px; background: #5a6e4e; margin-bottom: 1.8rem; }
@@ -34,11 +28,18 @@
     .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 0.5px solid #5a6e4e; display: flex; gap: 2rem; flex-wrap: wrap; }
     .footer a { font-size: 11px; color: #4a6644; text-decoration: none; letter-spacing: 0.15em; transition: opacity 0.2s; }
     .footer a:hover { opacity: 0.5; }
-    .term { background: #0f1a0f; border-radius: 4px; padding: 20px 24px; font-family: monospace; font-size: clamp(11px, 1.6vw, 13px); line-height: 1.8; color: #4a7a4a; min-height: 220px; overflow: hidden; }
-    .prompt { color: #2a4a2a; }
-    .out { color: #2a4a2a; }
-    .cursor { display: inline-block; width: 7px; height: 13px; background: #4a7a4a; vertical-align: middle; animation: blink 1.1s step-end infinite; }
+    .term { background: #1c1c1c; border-radius: 6px; font-family: 'Courier New', Courier, monospace; font-size: clamp(11px, 1.6vw, 13px); line-height: 1.6; color: #d0d0d0; padding: 16px; min-height: 280px; max-height: 380px; overflow-y: auto; cursor: text; }
+    .out { color: #d0d0d0; display: block; white-space: pre; }
+    .err { color: #c47a7a; display: block; white-space: pre; }
+    .flag { color: #d0d0d0; display: block; font-weight: bold; }
+    .committed { display: block; white-space: pre; }
+    .ps1-user { color: #6a9f6a; }
+    .ps1-host { color: #6a9f6a; }
+    .ps1-path { color: #6a8bbf; }
+    .input-line { display: block; white-space: pre; }
+    .cursor { display: inline-block; width: 1ch; background: #d0d0d0; animation: blink 1s step-end infinite; color: #1c1c1c; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .hidden-input { position: fixed; top: -9999px; left: -9999px; opacity: 0; }
 </style>
 </head>
 <body>
@@ -338,32 +339,48 @@
   <nav>
     <a href="/" >home</a>
     <a href="/experience" >experience</a>
-    <a href="/competitions" >competitions</a>
+    <a href="/competitions" class="active">competitions</a>
     <a href="/certifications" >certifications</a>
-    <a href="/projects" class="active">projects</a>
+    <a href="/projects" >projects</a>
   </nav>
 
-  <div class="section-label">PROJECTS</div>
+  <div class="section-label">COMPETITIONS</div>
   <div class="entry">
-    <div class="entry-title">kennethgharper.com — Self-Hosted Homelab</div>
-    <div class="entry-meta">UBUNTU · DOCKER · NGINX · CLOUDFLARE · TAILSCALE</div>
-    <div class="entry-body">
-      Always-on server running self-hosted services behind a Cloudflare Tunnel. Managed headlessly over SSH via Tailscale. Hosts this site, private cloud storage, and a file transfer service.
-    </div>
+    <div class="entry-title">Collegiate Cyber Defense Competition</div>
+    <div class="entry-meta">CCDC · DEC 2025 – PRESENT</div>
+    <div class="entry-body"><ul>
+      <li>Defend Windows environments under active attack while maintaining critical services</li>
+      <li>Use Sysinternals tools to identify suspicious processes, persistence, and abnormal network activity</li>
+      <li>Author incident response reports summarizing indicators of compromise and remediation actions</li>
+    </ul></div>
   </div>
   <div class="entry">
-    <div class="entry-title">Windows Security Lab</div>
-    <div class="entry-meta">WINDOWS SERVER 2019 · AEACUS · VULNERABILITY RESEARCH</div>
-    <div class="entry-body">
-      Built multiple vulnerable Windows Server 2019 VMs alongside two teammates. Used the Aeacus scoring engine to score participants on identifying and repairing security vulnerabilities.
-    </div>
+    <div class="entry-title">Collegiate Penetration Testing Competition</div>
+    <div class="entry-meta">CPTC · 2025 – 2026</div>
+    <div class="entry-body"><ul>
+      <li>Practiced penetration testing labs focused on Linux systems and web vulnerabilities</li>
+      <li>Identified and evaluated security issues, judging severity and business impact</li>
+      <li>Wrote clear reports explaining vulnerabilities and remediation steps</li>
+    </ul></div>
   </div>
   <div class="entry">
-    <div class="entry-title">Embedded Security — Voltage Glitch Research</div>
-    <div class="entry-meta">MITRE ECTF · EMBEDDED SYSTEMS · HARDWARE ATTACKS</div>
-    <div class="entry-body">
-      Analyzed embedded system designs for security weaknesses. Performed voltage glitch attacks to skip instructions and bypass authentication logic on target hardware.
-    </div>
+    <div class="entry-title">NCAE CyberGames — 2nd Place (Regional)</div>
+    <div class="entry-meta">NCAE · 2026</div>
+    <div class="entry-body"><ul>
+      <li>Finished 2nd regionally defending against an active red team</li>
+      <li>Served as DNS operator, managing and defending DNS infrastructure under attack</li>
+      <li>Worked primarily in Linux, hardening systems and maintaining services throughout</li>
+      <li>Completed CTF challenges alongside the defensive scenario</li>
+    </ul></div>
+  </div>
+  <div class="entry">
+    <div class="entry-title">MITRE Embedded CTF — Attack Team Member</div>
+    <div class="entry-meta">ECTF · OCT 2025 – PRESENT</div>
+    <div class="entry-body"><ul>
+      <li>Analyze embedded system designs for weaknesses in boot processes, memory protection, and cryptographic usage</li>
+      <li>Perform voltage glitch attacks to bypass authentication logic</li>
+      <li>Document security findings and develop realistic attack paths</li>
+    </ul></div>
   </div>
 
   <div class="footer">

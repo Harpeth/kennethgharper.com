@@ -18,8 +18,8 @@
     .name-svg { width: 100%; max-width: 580px; height: auto; display: block; margin-bottom: 1.6rem; }
     .tagline { font-size: clamp(11px, 2vw, 13px); color: #2a3a28; letter-spacing: 0.25em; margin-bottom: 2.5rem; }
     .divider { height: 0.5px; background: #5a6e4e; margin-bottom: 1.8rem; }
-    nav { display: flex; gap: 2rem; margin-bottom: 3.5rem; flex-wrap: wrap; }
-    nav a { font-size: clamp(11px, 1.8vw, 13px); color: #1a2218; text-decoration: none; letter-spacing: 0.18em; transition: opacity 0.2s; }
+    nav { display: flex; gap: clamp(0.8rem, 2.5vw, 2rem); margin-bottom: 3.5rem; flex-wrap: nowrap; overflow-x: auto; }
+    nav a { font-size: clamp(9px, 1.5vw, 13px); color: #1a2218; text-decoration: none; letter-spacing: clamp(0.08em, 0.5vw, 0.18em); transition: opacity 0.2s; white-space: nowrap; }
     nav a:hover { opacity: 0.4; }
     nav a.active { border-bottom: 1px solid #1a2218; padding-bottom: 2px; }
     .section-label { font-size: 10px; color: #4a6644; letter-spacing: 0.25em; margin-bottom: 1.5rem; }
@@ -34,6 +34,11 @@
     .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 0.5px solid #5a6e4e; display: flex; gap: 2rem; flex-wrap: wrap; }
     .footer a { font-size: 11px; color: #4a6644; text-decoration: none; letter-spacing: 0.15em; transition: opacity 0.2s; }
     .footer a:hover { opacity: 0.5; }
+    .term { background: #0f1a0f; border-radius: 4px; padding: 20px 24px; font-family: monospace; font-size: clamp(11px, 1.6vw, 13px); line-height: 1.8; color: #4a7a4a; min-height: 220px; overflow: hidden; }
+    .prompt { color: #2a4a2a; }
+    .out { color: #2a4a2a; }
+    .cursor { display: inline-block; width: 7px; height: 13px; background: #4a7a4a; vertical-align: middle; animation: blink 1.1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 </style>
 </head>
 <body>
@@ -339,28 +344,22 @@
   </nav>
 
   <div class="section-label">EXPERIENCE</div>
-
   <div class="entry">
     <div class="entry-title">Defensive Cyber Interest Group — Lead</div>
     <div class="entry-meta">TENNESSEE TECH · 2026</div>
-    <div class="entry-body">
-      <ul>
-        <li>Lead and plan biweekly defensive cybersecurity meetings</li>
-        <li>Train mentors on lab development and presentation delivery</li>
-        <li>Design and teach sessions on Windows Security, Red vs. Blue exercises, and Malware Analysis</li>
-      </ul>
-    </div>
+    <div class="entry-body"><ul>
+      <li>Lead and plan biweekly defensive cybersecurity meetings</li>
+      <li>Train mentors on lab development and presentation delivery</li>
+      <li>Design and teach sessions on Windows Security, Red vs. Blue exercises, and Malware Analysis</li>
+    </ul></div>
   </div>
-
   <div class="entry">
     <div class="entry-title">United States Marine Corps — Corporal, Reservist</div>
     <div class="entry-meta">USMC · MAY 2023 – PRESENT</div>
-    <div class="entry-body">
-      <ul>
-        <li>Operate tactical radios in any environment, maintaining communications under challenging conditions</li>
-        <li>Supervise and mentor junior Marines in setup, security procedures, and tactical execution</li>
-      </ul>
-    </div>
+    <div class="entry-body"><ul>
+      <li>Operate tactical radios in any environment, maintaining communications under challenging conditions</li>
+      <li>Supervise and mentor junior Marines in setup, security procedures, and tactical execution</li>
+    </ul></div>
   </div>
 
   <div class="footer">
@@ -369,26 +368,17 @@
   </div>
   <script>
     var bars = document.querySelectorAll('.sigbar');
-    var signal = 4;
-    var target = 4;
-    var nextChange = Date.now() + 3000;
-    function pickTarget() {
-      target = Math.floor(1 + Math.random() * 4.99);
-      nextChange = Date.now() + 2000 + Math.random() * 6000;
-    }
+    var signal = 4, target = 4, nextChange = Date.now() + 3000;
+    function pickTarget() { target = Math.floor(1 + Math.random() * 4.99); nextChange = Date.now() + 2000 + Math.random() * 6000; }
     pickTarget();
     function step() {
       if (Date.now() > nextChange) pickTarget();
-      if (Math.random() < 0.006) {
-        signal += (target > signal ? 1 : -1);
-        signal = Math.max(0, Math.min(5, signal));
-      }
-      for (var i = 0; i < bars.length; i++) {
-        bars[i].setAttribute('opacity', i < signal ? '1' : '0.12');
-      }
+      if (Math.random() < 0.006) { signal += (target > signal ? 1 : -1); signal = Math.max(0, Math.min(5, signal)); }
+      for (var i = 0; i < bars.length; i++) bars[i].setAttribute('opacity', i < signal ? '1' : '0.12');
       requestAnimationFrame(step);
     }
     step();
 </script>
+  
 </body>
 </html>
