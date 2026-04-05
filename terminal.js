@@ -29,8 +29,8 @@
       content: [
         '',
         'not ready yet, being worked on.',
-        'find the flags. submit them. see what unlocks.',
-        'but it/s not ready. Just a hint for what is to come.',
+        'i want flags to work as a key',
+        'but it/s not ready yet',
         '',
         '  /unlock',
         ''
