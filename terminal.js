@@ -1,6 +1,7 @@
 (function () {
 
   /* ── FILESYSTEM ───────────────────────────────────────────────────
+     Dot-prefix names are hidden files — only shown with ls -a or ls -al.
      Add new dirs/files here. Every path must also be listed as a
      child of its parent directory.
   ─────────────────────────────────────────────────────────────────── */
@@ -11,7 +12,7 @@
     },
     '~/kennethgharper': {
       type: 'dir',
-      children: ['catme.txt']
+      children: ['catme.txt', '.wip']
     },
     '~/kennethgharper/catme.txt': {
       type: 'file',
@@ -22,15 +23,45 @@
         'flag{ch1ck3n}',
         ''
       ]
+    },
+    '~/kennethgharper/.wip': {
+      type: 'file',
+      content: [
+        '',
+        'not ready yet, being worked on.',
+        'find the flags. submit them. see what unlocks.',
+        'but it/s not ready. Just a hint for what is to come.',
+        '',
+        '  /unlock',
+        ''
+      ]
     }
   };
 
   /* ── STATE ────────────────────────────────────────────────────────*/
-  var term   = document.getElementById('term');
-  var hi     = document.getElementById('hi');
-  var cwd    = '~';
+  var term    = document.getElementById('term');
+  var hi      = document.getElementById('hi');
+  var cwd     = '~';
   var history = [];
   var histIdx = -1;
+
+  /* ── FLAG PARSING ─────────────────────────────────────────────────
+     Splits args into flags (e.g. -al) and operands (paths etc).
+     Returns { flags: Set, operands: [] }
+     Supports any combo of single-char flags: -a, -l, -al, -la, etc.
+  ─────────────────────────────────────────────────────────────────── */
+  function parseArgs(args) {
+    var flags    = new Set();
+    var operands = [];
+    args.forEach(function (a) {
+      if (a.charAt(0) === '-' && a.length > 1) {
+        a.slice(1).split('').forEach(function (ch) { flags.add(ch); });
+      } else {
+        operands.push(a);
+      }
+    });
+    return { flags: flags, operands: operands };
+  }
 
   /* ── PATH RESOLUTION ──────────────────────────────────────────────*/
   function resolvePath(p) {
@@ -57,14 +88,14 @@
   var inputLine, beforeCursor, cursorEl, afterCursor;
 
   function buildInputLine() {
-    inputLine = document.createElement('div');
-    inputLine.className = 'input-line';
-    inputLine.innerHTML = ps1html();
-    beforeCursor = document.createElement('span');
-    cursorEl     = document.createElement('span');
-    cursorEl.className   = 'cursor';
-    cursorEl.textContent = ' ';
-    afterCursor  = document.createElement('span');
+    inputLine             = document.createElement('div');
+    inputLine.className   = 'input-line';
+    inputLine.innerHTML   = ps1html();
+    beforeCursor          = document.createElement('span');
+    cursorEl              = document.createElement('span');
+    cursorEl.className    = 'cursor';
+    cursorEl.textContent  = ' ';
+    afterCursor           = document.createElement('span');
     inputLine.appendChild(beforeCursor);
     inputLine.appendChild(cursorEl);
     inputLine.appendChild(afterCursor);
@@ -73,12 +104,12 @@
   }
 
   function rebuildPrompt() {
-    inputLine.innerHTML = ps1html();
-    beforeCursor = document.createElement('span');
-    cursorEl     = document.createElement('span');
+    inputLine.innerHTML  = ps1html();
+    beforeCursor         = document.createElement('span');
+    cursorEl             = document.createElement('span');
     cursorEl.className   = 'cursor';
     cursorEl.textContent = ' ';
-    afterCursor  = document.createElement('span');
+    afterCursor          = document.createElement('span');
     inputLine.appendChild(beforeCursor);
     inputLine.appendChild(cursorEl);
     inputLine.appendChild(afterCursor);
@@ -95,7 +126,7 @@
 
   /* ── OUTPUT ───────────────────────────────────────────────────────*/
   function printLine(text, cls) {
-    var el = document.createElement('div');
+    var el         = document.createElement('div');
     el.className   = cls || 'out';
     el.textContent = text;
     term.insertBefore(el, inputLine);
@@ -106,18 +137,17 @@
   function tabComplete() {
     var val   = hi.value;
     var parts = val.trimStart().split(/\s+/);
-    if (parts.length < 2) return;           // only complete arguments for now
+    if (parts.length < 2) return;
     var partial = parts[parts.length - 1];
+    if (partial.charAt(0) === '-') return;    // don't complete flags
     var base    = partial.includes('/') ? partial.slice(0, partial.lastIndexOf('/') + 1) : '';
     var stub    = partial.slice(base.length);
-    var dir     = resolvePath(base || '.');
-    if (dir === resolvePath('.')) dir = cwd;
-
-    var node = FS[dir === '.' ? cwd : dir] || FS[cwd];
+    var dir     = resolvePath(base || cwd);
+    var node    = FS[dir] || FS[cwd];
     if (!node || node.type !== 'dir') return;
 
     var matches = node.children.filter(function (c) {
-      return c.indexOf(stub) === 0;
+      return c.indexOf(stub) === 0 && c.charAt(0) !== '.';  // don't tab-complete hidden files
     });
     if (matches.length === 1) {
       parts[parts.length - 1] = base + matches[0];
@@ -130,7 +160,8 @@
 
   /* ── COMMANDS ─────────────────────────────────────────────────────
      Add new commands here as properties of CMDS.
-     Each receives an args array (everything after the command word).
+     Each receives the raw args array (everything after the command).
+     Use parseArgs(args) to split flags from operands inside each cmd.
   ─────────────────────────────────────────────────────────────────── */
   var CMDS = {
 
@@ -153,17 +184,53 @@
     },
 
     ls: function (args) {
-      var target = args[0] ? resolvePath(args[0]) : cwd;
-      var node   = FS[target];
+      var parsed  = parseArgs(args);
+      var showAll = parsed.flags.has('a');    // -a: show hidden dot-files
+      var longFmt = parsed.flags.has('l');    // -l: long listing format
+      var target  = parsed.operands[0] ? resolvePath(parsed.operands[0]) : cwd;
+      var node    = FS[target];
+
       if (!node) {
-        printLine("ls: cannot access '" + (args[0] || '.') + "': No such file or directory", 'err');
+        printLine("ls: cannot access '" + (parsed.operands[0] || '.') + "': No such file or directory", 'err');
         return;
       }
-      printLine(node.type === 'file' ? target.split('/').pop() : node.children.join('  '));
+
+      if (node.type === 'file') {
+        if (longFmt) {
+          printLine('-rw-r--r--  ' + target.split('/').pop());
+        } else {
+          printLine(target.split('/').pop());
+        }
+        return;
+      }
+
+      // filter hidden files unless -a
+      var entries = node.children.filter(function (c) {
+        return showAll || c.charAt(0) !== '.';
+      });
+
+      // prepend . and .. when -a is set
+      if (showAll) entries = ['.', '..'].concat(entries);
+
+      if (!longFmt) {
+        printLine(entries.join('  '));
+      } else {
+        entries.forEach(function (name) {
+          if (name === '.' || name === '..') {
+            printLine('drwxr-xr-x  ' + name);
+            return;
+          }
+          var childPath = (target === '~' ? '~/' : target + '/') + name;
+          var child     = FS[childPath];
+          var isDir     = child && child.type === 'dir';
+          printLine((isDir ? 'drwxr-xr-x' : '-rw-r--r--') + '  ' + name);
+        });
+      }
     },
 
     cd: function (args) {
-      var dest = args[0] || '~';
+      var parsed = parseArgs(args);
+      var dest   = parsed.operands[0] || '~';
       var target = resolvePath(dest);
       if (!FS[target]) {
         printLine('bash: cd: ' + dest + ': No such file or directory', 'err');
@@ -178,15 +245,16 @@
     },
 
     cat: function (args) {
-      if (!args[0]) { printLine('cat: missing operand', 'err'); return; }
-      var target = resolvePath(args[0]);
+      var parsed = parseArgs(args);
+      if (!parsed.operands[0]) { printLine('cat: missing operand', 'err'); return; }
+      var target = resolvePath(parsed.operands[0]);
       var node   = FS[target];
       if (!node) {
-        printLine('cat: ' + args[0] + ': No such file or directory', 'err');
+        printLine('cat: ' + parsed.operands[0] + ': No such file or directory', 'err');
         return;
       }
       if (node.type === 'dir') {
-        printLine('cat: ' + args[0] + ': Is a directory', 'err');
+        printLine('cat: ' + parsed.operands[0] + ': Is a directory', 'err');
         return;
       }
       node.content.forEach(function (line) {
@@ -208,7 +276,7 @@
     var cmd   = (parts[0] || '').toLowerCase();
     var args  = parts.slice(1);
 
-    var committed = document.createElement('div');
+    var committed       = document.createElement('div');
     committed.className = 'committed';
     committed.innerHTML = ps1html()
       + '<span>' + raw.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</span>';
