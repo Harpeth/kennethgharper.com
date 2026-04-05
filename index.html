@@ -37,6 +37,7 @@
     .out { color: #d0d0d0; display: block; white-space: pre; }
     .err { color: #c47a7a; display: block; white-space: pre; }
     .flag { color: #d0d0d0; display: block; font-weight: bold; }
+    .committed { display: block; white-space: pre; }
     .input-line { display: block; white-space: pre; }
     .ps1-user { color: #6a9f6a; }
     .ps1-host { color: #6a9f6a; }
@@ -48,7 +49,7 @@
     .footer a { font-family: monospace; font-size: clamp(9px, 1.3vw, 11px); color: #4a6644; text-decoration: none; letter-spacing: 0.15em; transition: opacity 0.2s; }
     .footer a:hover { opacity: 0.5; }
 
-    <!-- This is for the terminal style -->
+    /* This is for the terminal style */
     .motd { color: #6a9f6a; display: block; white-space: pre; }
     .info { color: #8ba8d4; display: block; white-space: pre; }
     .dim  { color: #555555; display: block; white-space: pre; }
@@ -369,7 +370,7 @@
     pickTarget();
     function step() {
       if (Date.now() > nextChange) pickTarget();
-      if (Math.random() < 0.006) { signal += (target > signal ? 1 : -1); signal = Math.max(0, Math.min(5, signal)); }
+      if (Math.random() < 0.006) { signal += (target > signal ? 1 : -1); signal = Math.max(1, Math.min(5, signal)); }
       for (var i = 0; i < bars.length; i++) bars[i].setAttribute('opacity', i < signal ? '1' : '0.12');
       requestAnimationFrame(step);
     }
@@ -377,7 +378,7 @@
 </script>
 
 <!-- Adding the terminal through a separate js file -->
-  <script src="terminal.js?v=3"></script>
+  <script src="terminal.js?v=4"></script>
 
 </body>
 </html>
