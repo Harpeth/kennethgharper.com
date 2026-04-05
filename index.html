@@ -7,43 +7,56 @@
   <title>Kenneth Harper</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { min-height: 100%; background: #7a8c6e; }
-    body { font-family: monospace; color: #1a2218; padding: 10vw 8vw; max-width: 860px; margin: 0 auto; }
-    .name-svg { width: 100%; max-width: 580px; height: auto; display: block; margin-bottom: 1.6rem; }
-    .tagline { font-size: clamp(11px, 2vw, 13px); color: #2a3a28; letter-spacing: 0.25em; margin-bottom: 2.5rem; }
-    .divider { height: 0.5px; background: #5a6e4e; margin-bottom: 1.8rem; }
-    nav { display: flex; gap: clamp(0.8rem, 2.5vw, 2rem); margin-bottom: 3.5rem; flex-wrap: nowrap; overflow-x: auto; }
-    nav a { font-size: clamp(9px, 1.5vw, 13px); color: #1a2218; text-decoration: none; letter-spacing: clamp(0.08em, 0.5vw, 0.18em); transition: opacity 0.2s; white-space: nowrap; }
+    html, body { height: 100%; overflow: hidden; background: #7a8c6e; }
+    body { display: flex; align-items: center; justify-content: center; }
+    .container {
+      width: min(90vw, 700px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.6rem, 2vh, 1.2rem);
+    }
+    .name-svg { width: 100%; height: auto; display: block; }
+    .tagline { font-family: monospace; font-size: clamp(9px, 1.8vw, 13px); color: #2a3a28; letter-spacing: 0.25em; }
+    .divider { height: 0.5px; background: #5a6e4e; }
+    nav { display: flex; gap: clamp(0.6rem, 2vw, 2rem); overflow-x: auto; }
+    nav a { font-family: monospace; font-size: clamp(9px, 1.4vw, 13px); color: #1a2218; text-decoration: none; letter-spacing: clamp(0.06em, 0.4vw, 0.18em); white-space: nowrap; transition: opacity 0.2s; }
     nav a:hover { opacity: 0.4; }
     nav a.active { border-bottom: 1px solid #1a2218; padding-bottom: 2px; }
-    .section-label { font-size: 10px; color: #4a6644; letter-spacing: 0.25em; margin-bottom: 1.5rem; }
-    .entry { margin-bottom: 2.5rem; padding-left: 1rem; border-left: 1px solid #5a6e4e; }
-    .entry-title { font-size: clamp(12px, 2vw, 14px); color: #1a2218; margin-bottom: 0.3rem; letter-spacing: 0.04em; }
-    .entry-meta { font-size: clamp(10px, 1.5vw, 11px); color: #4a6644; letter-spacing: 0.12em; margin-bottom: 0.6rem; }
-    .entry-body { font-size: clamp(11px, 1.7vw, 13px); color: #2a3a28; line-height: 1.9; }
-    .entry-body ul { padding-left: 1.2rem; }
-    .entry-body li { margin-bottom: 0.35rem; }
-    .cert-link { font-size: clamp(10px, 1.5vw, 11px); color: #4a6644; letter-spacing: 0.08em; text-decoration: none; display: inline-block; margin-top: 0.5rem; border-bottom: 0.5px solid #4a6644; }
-    .cert-link:hover { opacity: 0.5; }
-    .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 0.5px solid #5a6e4e; display: flex; gap: 2rem; flex-wrap: wrap; }
-    .footer a { font-size: 11px; color: #4a6644; text-decoration: none; letter-spacing: 0.15em; transition: opacity 0.2s; }
-    .footer a:hover { opacity: 0.5; }
-    .term { background: #1c1c1c; border-radius: 6px; font-family: 'Courier New', Courier, monospace; font-size: clamp(11px, 1.6vw, 13px); line-height: 1.6; color: #d0d0d0; padding: 16px; min-height: 280px; max-height: 380px; overflow-y: auto; cursor: text; }
+    .term {
+      background: #1c1c1c;
+      border-radius: 4px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: clamp(10px, 1.5vw, 13px);
+      line-height: 1.6;
+      color: #d0d0d0;
+      padding: clamp(10px, 2vh, 16px);
+      height: clamp(160px, 30vh, 280px);
+      overflow-y: auto;
+      cursor: text;
+    }
     .out { color: #d0d0d0; display: block; white-space: pre; }
     .err { color: #c47a7a; display: block; white-space: pre; }
     .flag { color: #d0d0d0; display: block; font-weight: bold; }
-    .committed { display: block; white-space: pre; }
+    .input-line { display: block; white-space: pre; }
     .ps1-user { color: #6a9f6a; }
     .ps1-host { color: #6a9f6a; }
     .ps1-path { color: #6a8bbf; }
-    .input-line { display: block; white-space: pre; }
     .cursor { display: inline-block; width: 1ch; background: #d0d0d0; animation: blink 1s step-end infinite; color: #1c1c1c; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
     .hidden-input { position: fixed; top: -9999px; left: -9999px; opacity: 0; }
-</style>
+    .footer { display: flex; gap: 2rem; }
+    .footer a { font-family: monospace; font-size: clamp(9px, 1.3vw, 11px); color: #4a6644; text-decoration: none; letter-spacing: 0.15em; transition: opacity 0.2s; }
+    .footer a:hover { opacity: 0.5; }
+
+    <!-- This is for the terminal style -->
+    .motd { color: #6a9f6a; display: block; white-space: pre; }
+    .info { color: #8ba8d4; display: block; white-space: pre; }
+    .dim  { color: #555555; display: block; white-space: pre; }
+  </style>
 </head>
 <body>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 64" class="name-svg" id="mainsvg">
+  <div class="container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 64" class="name-svg" id="mainsvg">
       <rect x="0" y="44" width="2" height="2" fill="#1a2218"/>
         <rect x="8" y="44" width="2" height="2" fill="#1a2218"/>
         <rect x="0" y="46" width="2" height="2" fill="#1a2218"/>
@@ -334,21 +347,20 @@
         <rect x="230" y="49" width="2" height="11" fill="#2a3a28" class="sigbar" data-idx="3"/>
         <rect x="234" y="47" width="2" height="13" fill="#2a3a28" class="sigbar" data-idx="4"/>
     </svg>
-  <div class="tagline">CYBERSECURITY · USMC</div>
-  <div class="divider"></div>
-  <nav>
-    <a href="/" class="active">home</a>
+    <div class="tagline">CYBERSECURITY · USMC</div>
+    <div class="divider"></div>
+    <nav><a href="/" class="active">home</a>
     <a href="/experience" >experience</a>
     <a href="/competitions" >competitions</a>
     <a href="/certifications" >certifications</a>
-    <a href="/projects" >projects</a>
-  </nav>
-  <div class="term" id="term">
-    <input class="hidden-input" id="hi" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-  </div>
-  <div class="footer">
+    <a href="/projects" >projects</a></nav>
+    <div class="term" id="term">
+      <input class="hidden-input" id="hi" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </div>
+    <div class="footer">
     <a href="https://github.com/Harpeth" target="_blank">GITHUB</a>
     <a href="https://www.linkedin.com/in/kennethgharper/" target="_blank">LINKEDIN</a>
+  </div>
   </div>
   <script>
     var bars = document.querySelectorAll('.sigbar');
@@ -363,107 +375,9 @@
     }
     step();
 </script>
-  
-<script>
-var term = document.getElementById('term');
-var hi = document.getElementById('hi');
-var cwd = '~';
-var FS = {
-  '~': { type: 'dir', children: ['kennethgharper'] },
-  '~/kennethgharper': { type: 'dir', children: ['catme.txt'] },
-  '~/kennethgharper/catme.txt': {
-    type: 'file',
-    content: [
-      '',
-      'Hey! Welcome to my website, take a look around.',
-      '',
-      'flag{ch1ck3n}',
-      ''
-    ]
-  }
-};
-function resolvePath(p) {
-  if (!p || p === '~') return '~';
-  if (p === '..') { if (cwd === '~') return '~'; var pts = cwd.split('/'); pts.pop(); return pts.join('/') || '~'; }
-  if (p.startsWith('~/')) return p;
-  if (cwd === '~') return '~/' + p;
-  return cwd + '/' + p;
-}
-function ps1html() {
-  return '<span class="ps1-user">guest</span>@<span class="ps1-host">kennethgharper</span>:<span class="ps1-path">' + cwd + '</span>$ ';
-}
-var inputLine, beforeCursor, cursorEl, afterCursor;
-function buildInputLine() {
-  inputLine = document.createElement('div');
-  inputLine.className = 'input-line';
-  inputLine.innerHTML = ps1html();
-  beforeCursor = document.createElement('span');
-  cursorEl = document.createElement('span'); cursorEl.className = 'cursor'; cursorEl.textContent = ' ';
-  afterCursor = document.createElement('span');
-  inputLine.appendChild(beforeCursor); inputLine.appendChild(cursorEl); inputLine.appendChild(afterCursor);
-  term.appendChild(inputLine);
-  term.scrollTop = term.scrollHeight;
-}
-function updateCursor() {
-  var val = hi.value;
-  var pos = hi.selectionStart !== undefined ? hi.selectionStart : val.length;
-  beforeCursor.textContent = val.slice(0, pos);
-  cursorEl.textContent = val[pos] || ' ';
-  afterCursor.textContent = val.slice(pos + 1);
-  term.scrollTop = term.scrollHeight;
-}
-function printLine(text, cls) {
-  var el = document.createElement('div'); el.className = cls || 'out'; el.textContent = text;
-  term.insertBefore(el, inputLine); term.scrollTop = term.scrollHeight;
-}
-function rebuildPrompt() {
-  inputLine.innerHTML = ps1html();
-  beforeCursor = document.createElement('span');
-  cursorEl = document.createElement('span'); cursorEl.className = 'cursor'; cursorEl.textContent = ' ';
-  afterCursor = document.createElement('span');
-  inputLine.appendChild(beforeCursor); inputLine.appendChild(cursorEl); inputLine.appendChild(afterCursor);
-}
-var CMDS = {
-  help: function() { printLine('available commands: ls, cd, cat, pwd, clear, whoami, help'); },
-  whoami: function() { printLine('guest'); },
-  pwd: function() { printLine(cwd.replace('~', '/home/guest')); },
-  clear: function() { Array.from(term.children).forEach(function(c) { if (c !== inputLine && c !== hi) c.remove(); }); },
-  ls: function(args) {
-    var t = args[0] ? resolvePath(args[0]) : cwd;
-    var node = FS[t];
-    if (!node) { printLine("ls: cannot access '" + (args[0]||'.') + "': No such file or directory", 'err'); return; }
-    printLine(node.type === 'file' ? t.split('/').pop() : node.children.join('  '));
-  },
-  cd: function(args) {
-    var dest = args[0] || '~'; var t = resolvePath(dest);
-    if (!FS[t]) { printLine('bash: cd: ' + dest + ': No such file or directory', 'err'); return; }
-    if (FS[t].type === 'file') { printLine('bash: cd: ' + dest + ': Not a directory', 'err'); return; }
-    cwd = t; rebuildPrompt();
-  },
-  cat: function(args) {
-    if (!args[0]) { printLine('cat: missing operand', 'err'); return; }
-    var t = resolvePath(args[0]); var node = FS[t];
-    if (!node) { printLine("cat: " + args[0] + ": No such file or directory", 'err'); return; }
-    if (node.type === 'dir') { printLine("cat: " + args[0] + ": Is a directory", 'err'); return; }
-    node.content.forEach(function(line) { printLine(line, line.startsWith('flag{') ? 'flag' : 'out'); });
-  }
-};
-function run(raw) {
-  var safe = raw.replace(/[<>&]/g, '');
-  var parts = safe.trim().split(/\s+/); var cmd = (parts[0]||'').toLowerCase(); var args = parts.slice(1);
-  var committed = document.createElement('div'); committed.className = 'committed';
-  committed.innerHTML = ps1html() + '<span>' + raw.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</span>';
-  term.insertBefore(committed, inputLine);
-  hi.value = ''; rebuildPrompt();
-  if (cmd) { if (CMDS[cmd]) CMDS[cmd](args); else printLine('bash: ' + cmd + ': command not found', 'err'); }
-  term.scrollTop = term.scrollHeight; hi.focus();
-}
-hi.addEventListener('input', updateCursor);
-hi.addEventListener('keydown', function(e) { if (e.key === 'Enter') { run(hi.value); } else { setTimeout(updateCursor, 0); } });
-term.addEventListener('click', function() { hi.focus(); });
-buildInputLine();
-hi.focus();
-</script>
+
+<!-- Adding the terminal through a separate js file -->
+  <script src="terminal.js"></script>
 
 </body>
 </html>

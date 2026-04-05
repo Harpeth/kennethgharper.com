@@ -8,37 +8,26 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; background: #7a8c6e; }
-    body {
-      font-family: monospace;
-      color: #1a2218;
-      padding: 10vw 8vw;
-      max-width: 860px;
-      margin: 0 auto;
-    }
-    .name-svg { width: 100%; max-width: 580px; height: auto; display: block; margin-bottom: 1.6rem; }
-    .tagline { font-size: clamp(11px, 2vw, 13px); color: #2a3a28; letter-spacing: 0.25em; margin-bottom: 2.5rem; }
-    .divider { height: 0.5px; background: #5a6e4e; margin-bottom: 1.8rem; }
-    nav { display: flex; gap: clamp(0.8rem, 2.5vw, 2rem); margin-bottom: 3.5rem; flex-wrap: nowrap; overflow-x: auto; }
-    nav a { font-size: clamp(9px, 1.5vw, 13px); color: #1a2218; text-decoration: none; letter-spacing: clamp(0.08em, 0.5vw, 0.18em); transition: opacity 0.2s; white-space: nowrap; }
+    body { font-family: monospace; color: #1a2218; padding: clamp(1.5rem, 5vw, 3rem) clamp(1.5rem, 6vw, 4rem); max-width: 860px; margin: 0 auto; }
+    .name-svg { width: 100%; max-width: 580px; height: auto; display: block; margin-bottom: clamp(0.8rem, 2vh, 1.4rem); }
+    .tagline { font-size: clamp(9px, 1.6vw, 13px); color: #2a3a28; letter-spacing: 0.25em; margin-bottom: clamp(0.8rem, 2vh, 1.8rem); }
+    .divider { height: 0.5px; background: #5a6e4e; margin-bottom: clamp(0.8rem, 2vh, 1.4rem); }
+    nav { display: flex; gap: clamp(0.6rem, 2vw, 2rem); margin-bottom: clamp(1.5rem, 4vh, 3rem); overflow-x: auto; flex-wrap: nowrap; }
+    nav a { font-size: clamp(9px, 1.4vw, 13px); color: #1a2218; text-decoration: none; letter-spacing: clamp(0.06em, 0.4vw, 0.18em); white-space: nowrap; transition: opacity 0.2s; }
     nav a:hover { opacity: 0.4; }
     nav a.active { border-bottom: 1px solid #1a2218; padding-bottom: 2px; }
-    .section-label { font-size: 10px; color: #4a6644; letter-spacing: 0.25em; margin-bottom: 1.5rem; }
-    .entry { margin-bottom: 2.5rem; padding-left: 1rem; border-left: 1px solid #5a6e4e; }
-    .entry-title { font-size: clamp(12px, 2vw, 14px); color: #1a2218; margin-bottom: 0.3rem; letter-spacing: 0.04em; }
-    .entry-meta { font-size: clamp(10px, 1.5vw, 11px); color: #4a6644; letter-spacing: 0.12em; margin-bottom: 0.6rem; }
-    .entry-body { font-size: clamp(11px, 1.7vw, 13px); color: #2a3a28; line-height: 1.9; }
+    .section-label { font-size: 10px; color: #4a6644; letter-spacing: 0.25em; margin-bottom: clamp(0.8rem, 2vh, 1.5rem); }
+    .entry { margin-bottom: clamp(1.2rem, 3vh, 2.5rem); padding-left: clamp(0.6rem, 1.5vw, 1rem); border-left: 1px solid #5a6e4e; }
+    .entry-title { font-size: clamp(11px, 1.8vw, 14px); color: #1a2218; margin-bottom: 0.3rem; letter-spacing: 0.04em; }
+    .entry-meta { font-size: clamp(9px, 1.3vw, 11px); color: #4a6644; letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+    .entry-body { font-size: clamp(10px, 1.5vw, 13px); color: #2a3a28; line-height: 1.9; }
     .entry-body ul { padding-left: 1.2rem; }
     .entry-body li { margin-bottom: 0.35rem; }
-    .cert-link { font-size: clamp(10px, 1.5vw, 11px); color: #4a6644; letter-spacing: 0.08em; text-decoration: none; display: inline-block; margin-top: 0.5rem; border-bottom: 0.5px solid #4a6644; }
+    .cert-link { font-size: clamp(9px, 1.3vw, 11px); color: #4a6644; letter-spacing: 0.08em; text-decoration: none; display: inline-block; margin-top: 0.5rem; border-bottom: 0.5px solid #4a6644; }
     .cert-link:hover { opacity: 0.5; }
-    .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 0.5px solid #5a6e4e; display: flex; gap: 2rem; flex-wrap: wrap; }
-    .footer a { font-size: 11px; color: #4a6644; text-decoration: none; letter-spacing: 0.15em; transition: opacity 0.2s; }
+    .footer { margin-top: clamp(2rem, 5vh, 4rem); padding-top: 1.5rem; border-top: 0.5px solid #5a6e4e; display: flex; gap: 2rem; flex-wrap: wrap; }
+    .footer a { font-size: clamp(9px, 1.3vw, 11px); color: #4a6644; text-decoration: none; letter-spacing: 0.15em; transition: opacity 0.2s; }
     .footer a:hover { opacity: 0.5; }
-    .term { background: #0f1a0f; border-radius: 4px; padding: 20px 24px; font-family: monospace; font-size: clamp(11px, 1.6vw, 13px); line-height: 1.8; color: #4a7a4a; min-height: 220px; overflow: hidden; }
-    .prompt { color: #2a4a2a; }
-    .out { color: #2a4a2a; }
-    .cursor { display: inline-block; width: 7px; height: 13px; background: #4a7a4a; vertical-align: middle; animation: blink 1.1s step-end infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 </style>
 </head>
 <body>
@@ -335,13 +324,11 @@
     </svg>
   <div class="tagline">CYBERSECURITY · USMC</div>
   <div class="divider"></div>
-  <nav>
-    <a href="/" >home</a>
+  <nav><a href="/" >home</a>
     <a href="/experience" >experience</a>
     <a href="/competitions" >competitions</a>
     <a href="/certifications" class="active">certifications</a>
-    <a href="/projects" >projects</a>
-  </nav>
+    <a href="/projects" >projects</a></nav>
 
   <div class="section-label">CERTIFICATIONS</div>
   <div class="entry">
@@ -370,6 +357,5 @@
     }
     step();
 </script>
-  
 </body>
 </html>
